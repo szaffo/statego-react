@@ -1,24 +1,24 @@
-class StageSelector {
-    constructor(num)  {
-        this.numOfStages = num;
-        this.active = 1;
-        this.setActive(1);
-    }
+// class StageSelector {
+//     constructor(num)  {
+//         this.numOfStages = num;
+//         this.active = 1;
+//         this.setActive(1);
+//     }
 
-    setActive(num) {
-        if (!Number.isInteger(num)) throw new Error("Number has to be a positive integer");
-        if (num > this.numOfStages) throw new Error("Given number is bigger than the maximum of stages");
-        if (num < 0) throw new Error("Given number has to be positive integer");
+//     setActive(num) {
+//         if (!Number.isInteger(num)) throw new Error("Number has to be a positive integer");
+//         if (num > this.numOfStages) throw new Error("Given number is bigger than the maximum of stages");
+//         if (num < 0) throw new Error("Given number has to be positive integer");
 
-        document.getElementById(`stage-${this.active}`).classList.remove("active");
-        this.active = num;
-        document.getElementById(`stage-${this.active}`).classList.add("active");
-    }
-}
+//         document.getElementById(`stage-${this.active}`).classList.remove("active");
+//         this.active = num;
+//         document.getElementById(`stage-${this.active}`).classList.add("active");
+//     }
+// }
 
-document.addEventListener("DOMContentLoaded", function() {
-    document.stager = new StageSelector();
-})
+// document.addEventListener("DOMContentLoaded", function() {
+//     document.stager = new StageSelector();
+// })
 
 var popupTimer;
 
@@ -57,26 +57,26 @@ $(document).ready(function () {
 });
 
 
-$('.ui.modal').modal({
-    onApprove: function (element) {
-        document.stager.setActive(4);
-        console.log("approve");
+// $('.ui.modal').modal({
+//     onApprove: function (element) {
+//         document.stager.setActive(4);
+//         console.log("approve");
 
-        return true;
-    },
-});
+//         return true;
+//     },
+// });
 
 
-function allowDrop(ev) {
-    ev.preventDefault();
-}
+// function allowDrop(ev) {
+//     ev.preventDefault();
+// }
 
-function drag(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
-}
+// function drag(ev) {
+//     ev.dataTransfer.setData("text", ev.target.id);
+// }
 
-function drop(ev) {
-    ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    ev.target.appendChild(document.getElementById(data));
-}
+// function drop(ev) {
+//     ev.preventDefault();
+//     var data = ev.dataTransfer.getData("text");
+//     ev.target.appendChild(document.getElementById(data));
+// }

@@ -1,9 +1,13 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { setStageAction } from '../../actions/stageActions';
 
 export function Stage2(props) {
+    const dispatch = useDispatch();
+
     return <div className="stage" id="stage-2">
             <div className="back-wrapper">
-            <div onClick={() => { document.stager.setActive(1)}} ><i className="arrow left icon large"></i></div>
+            <div onClick={() => dispatch(setStageAction(1))} ><i className="arrow left icon large"></i></div>
             </div>
             <div className="ui segment">
                 <h2 className="ui header huge centered">Játékkód</h2>
