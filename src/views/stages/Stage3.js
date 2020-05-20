@@ -5,13 +5,15 @@ import player1 from "../../images/player_1.png";
 import player2 from "../../images/player_2.png";
 
 import { Board } from "../table/Board";
-import { PieceHolder } from '../table/PieceHolder';
+import { Hand } from '../table/Hand';
 import { ReadyModal } from '../modals/readyModal';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setStageAction } from '../../actions/stageActions';
 
 export function Stage3(props) {
     const dispatch = useDispatch();
+    const hand = useSelector(store => store.hand);
+    const canContinue = (hand.length === 0);
 
     return <div className="stage" id="stage-3">
         <div className="ui five column grid stage-3-grid">
@@ -34,7 +36,7 @@ export function Stage3(props) {
                     </Comment>
                 </div>
 
-                <ReadyModal onOkay={() => {dispatch(setStageAction(4))}}></ReadyModal>
+                <ReadyModal disabled={canContinue} onOkay={() => {dispatch(setStageAction(4))}}></ReadyModal>
 
             </div>
             <div className="column eight wide">
@@ -43,7 +45,7 @@ export function Stage3(props) {
             </div>
             <div className="column four wide">
                 <h1 className="ui header centered medium">Felhasználható katonák</h1>
-                <PieceHolder></PieceHolder>
+                <Hand></Hand>
             </div>
         </div>
     </div>;

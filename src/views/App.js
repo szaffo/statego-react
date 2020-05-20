@@ -8,6 +8,9 @@ import { Stage4 } from './stages/Stage4';
 
 import { useSelector } from 'react-redux';
 
+import { DndProvider } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+
 function App(props) {
 	const stage = useSelector(state => state.stage);
 	let stageComp;
@@ -18,10 +21,12 @@ function App(props) {
 	if (stage === 4) stageComp = <Stage4></Stage4>
 	
 	return (
-		<div className="App stage-container">
-			<Header></Header>
-			{stageComp}
-		</div>
+		<DndProvider backend={HTML5Backend}>
+			<div className="App stage-container">
+				<Header></Header>
+				{stageComp}
+			</div>
+		</DndProvider>
 	);
 }
 

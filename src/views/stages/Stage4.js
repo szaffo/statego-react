@@ -4,10 +4,16 @@ import player1 from "../../images/player_1.png";
 import player2 from "../../images/player_2.png";
 
 import { Board } from "../table/Board";
-import { PieceHolder } from '../table/PieceHolder';
+import { Hand } from '../table/Hand';
+import { useSelector } from 'react-redux';
 
 
 export function Stage4(props) {
+
+    const round = useSelector(state => state.round);
+    const roundText = (round)? 'A Te köröd' : 'Az ellenség köre';
+
+
     return  <div className="stage" id="stage-4">
             <div className="ui five column grid stage-3-grid">
                 <div className="column four wide">
@@ -29,12 +35,12 @@ export function Stage4(props) {
                     </div>
                 </div>
                 <div className="column eight wide">
-                    <h1 className="ui header centered">Elenség köre</h1>
+                    <h1 className="ui header centered">{roundText}</h1>
                     <Board></Board>
                 </div>
                 <div className="column four wide">
                     <h1 className="ui header centered medium">Elesett katonák</h1>
-                    <PieceHolder></PieceHolder>
+                    <Hand></Hand>
                 </div>
             </div>
         </div>;
