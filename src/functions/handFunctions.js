@@ -1,3 +1,5 @@
+import {deepCopy} from "./generalFunctions";
+
 export const HAND_SIZE = 12;
 
 /**
@@ -51,5 +53,13 @@ export function removePieceFromHand(hand, piece) {
  */
 export function addPieceToHand(hand, piece) {
     hand.push(piece);
-    return JSON.parse(JSON.stringify(hand));
+    return deepCopy(hand);
+}
+
+/**
+ * This function erases the Hand.
+ * It's only for speed up testing
+ */
+export function eraseHand() {
+    return [];
 }

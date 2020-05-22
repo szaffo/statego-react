@@ -1,38 +1,25 @@
 import React from 'react';
-import { Comment } from 'semantic-ui-react'
-import player1 from "../../images/player_1.png";
-import player2 from "../../images/player_2.png";
+import {Button} from 'semantic-ui-react'
 
 import { Board } from "../board/Board";
 import { Hand } from '../board/Hand';
-import { useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {toggleRound} from "../../actions/roundFunctions";
+import {PlayerList} from "../players/playerList";
 
 
 export function Stage4() {
 
     const round = useSelector(state => state.round);
-    const roundText = (round)? 'A Te köröd' : 'Az ellenség köre';
+    const roundText = (round.now === round.player_1)? 'A Te köröd' : 'Az ellenség köre';
+    const dispatch = useDispatch();
 
 
     return  <div className="stage" id="stage-4">
             <div className="ui five column grid stage-3-grid">
-                <div className="column four wide">
-                    <div className="ui comments">
-                        <h1 className="ui header medium">Játékosok</h1>
-                        <Comment>
-                            <Comment.Avatar src={player1} />
-                            <Comment.Content>
-                                <Comment.Author as='a'>Első játékos</Comment.Author>
-                            </Comment.Content>
-                        </Comment>
-
-                        <Comment>
-                            <Comment.Avatar src={player2} />
-                            <Comment.Content>
-                                <Comment.Author as='a'>Második játékos</Comment.Author>
-                            </Comment.Content>
-                        </Comment>
-                    </div>
+                <div className="column four wide center aligned">
+                    <PlayerList/>
+                    <Button positive onClick={() => {dispatch(toggleRound())}}>Toggle round</Button>
                 </div>
                 <div className="column eight wide">
                     <h1 className="ui header centered">{roundText}</h1>

@@ -27,10 +27,17 @@ export function Stage1(props) {
                                     <input type="text" placeholder="Játékkód"/>
                                 </div>
                                 <div className="ui animated button primary" tabIndex="0"
-                                onClick={() => dispatch(setStageAction(3))}>
+                                     onClick={() => dispatch({type:'FILL'})}>
+                                    <div className="visible content">FILL</div>
+                                    <div className="hidden content"><i className="right arrow icon"></i></div>
+                                </div>
+
+                                <div className="ui animated button primary" tabIndex="0"
+                                     onClick={() => dispatch(setStageAction(3))}>
                                     <div className="visible content">Csatlakozás</div>
                                     <div className="hidden content"><i className="right arrow icon"></i></div>
                                 </div>
+
                             </div>
                         </div>
                     </div>

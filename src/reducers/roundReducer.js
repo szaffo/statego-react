@@ -1,11 +1,11 @@
-export const roundReducer = (round = true, action) => {
+import {generateRound, toggleRound} from "../functions/roundFunctions";
+
+const starter = generateRound('Martin', 'Petra', 'Petra');
+
+export const roundReducer = (round = starter, action) => {
     switch (action.type) {
-        case 'TOGGLEROUND':
-            return !round;
-        case 'ENEMYROUND':
-            return false;
-        case 'YOURROUND':
-            return true;
+        case 'TOGGLE_ROUND':
+            return toggleRound(round);
         default:
             return round;
     }

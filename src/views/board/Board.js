@@ -1,17 +1,19 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { getSizeOfBoard } from '../../functions/boardFunctions';
 
-import { Slot } from "./Slot";
+import { Cell } from "./Cell";
 
 export function Board(props) {
     const board = useSelector(state => state.pieces.board);
     const dndAllowed = props.dndAllowed || false;
     const slots = [];
+    const boardSize = getSizeOfBoard(board);
 
-    for (let row = 0; row < board.length; row++) {
-        for (let col = 0; col < board[row].length; col++) {
+    for (let row = 0; row < boardSize.rows; row++) {
+        for (let col = 0; col < boardSize.cols; col++) {
             slots.push(
-                <Slot row={row} col={col} key={`BS-row${row}-col${col}`} dndAllowed={dndAllowed}/>
+                <Cell row={row} col={col} key={`BS-row${row}-col${col}`} dndAllowed={dndAllowed}/>
             );
         }
     }

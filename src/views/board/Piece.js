@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useDrag } from 'react-dnd'
 import {generatePiece} from "../../functions/boardFunctions";
-import {movePieceFormHandToBoard, movePieceFromBoardToHand} from "../../actions/piecesActions";
+import {movePieceFormHandToBoard, movePieceFromBoardToHand, selectPiece} from "../../actions/piecesActions";
 
 export function Piece(props) {
     const dndAllowed = props.dndAllowed || false;
@@ -45,6 +45,10 @@ export function Piece(props) {
     function click(event, data) {
         if ((data.from === 'board') && dndAllowed) {
             dispatch(movePieceFromBoardToHand(generatePiece(data.piece, data.color), data.row, data.col));
+        }
+
+        if ((data.from === 'board') && (['1', '2', '3', '4', '6', '8', '10'].includes(data.piece))) {
+            dispatch(selectPiece(props.row, props.col));
         }
     }
     

@@ -1,6 +1,6 @@
 export const setStageAction = (number) => {
     return {
-        type: 'SETSTAGE',
+        type: 'SET_STAGE',
         stage: number
     }
 }

@@ -1,3 +1,5 @@
+import {deepCopy} from "./generalFunctions";
+
 export const BOARD_ROW_NUM = 6;
 export const BOARD_COL_NUM = 6;
 
@@ -21,10 +23,11 @@ function generateCell() {
  * @returns Board
  */
 export function fillCell(board, piece, row, col) {
-    let cell = board[row][col];
-    cell.piece = piece;
-    cell.filled = true;
-    return deepCopy(board);
+    if (piece === null) return board;
+    let newBoard = deepCopy(board);
+    newBoard.data[row][col].piece = piece;
+    newBoard.data[row][col].filled = true;
+    return newBoard
 }
 
 /**
@@ -35,9 +38,10 @@ export function fillCell(board, piece, row, col) {
  * @returns {Board}
  */
 export function eraseCell(board, row, col) {
-    board[row][col].filled = false;
-    board[row][col].piece = null;
-    return deepCopy(board);
+    let newBoard = deepCopy(board);
+    newBoard.data[row][col].filled = false;
+    newBoard.data[row][col].piece = null;
+    return newBoard;
 }
 
 /**
@@ -48,7 +52,7 @@ export function eraseCell(board, row, col) {
  * @returns {Piece}
  */
 export function getCellFromBoard(board, row, col) {
-    return deepCopy(board[row][col]);
+    return deepCopy(board.data[row][col]);
 }
 
 /**
@@ -75,10 +79,11 @@ export function isCellHasPiece(cell) {
  * @param color
  * @returns {{color: string, type: string}}
  */
-export function generatePiece(type, color) {
+export function generatePiece(type, color,) {
     return {
         type,
-        color
+        color,
+        selected: false
     }
 }
 
@@ -89,29 +94,24 @@ export function generatePiece(type, color) {
  * @returns Board
  */
 export function generateBoard(numOfRows, numOfCols) {
-    let board = [];
+    let board = {
+        data: [],
+        selected: null,
+        activeCells: []
+    };
     let row = [];
     for (let i = 0; i < numOfRows; i++) {
         row = [];
         for (let k = 0; k < numOfCols; k++) {
             row.push(generateCell());
         }
-        board.push(row);
+        board.data.push(row);
     }
     return board
 }
 
 /**
- * Creates a copy of the object via JSON stringify and parse
- * @param obj
- * @returns deep copy of obj
- */
-export function deepCopy(obj) {
-    return JSON.parse(JSON.stringify(obj));
-}
-
-/**
- * Ads a Piece to the Board. Creates a deep copy of tht Board, if the Cell changed.
+ * Adds a Piece to the Board. Creates a deep copy of that Board, if the Cell changed.
  * @param board
  * @param piece - A generatePiece() generated Piece
  * @param row
@@ -119,7 +119,7 @@ export function deepCopy(obj) {
  * @returns Board
  */
 export function addPieceToBoard(board, piece, row, col) {
-    let cell = board[row][col];
+    let cell = getCellFromBoard(board, row, col);
     if (!isCellHasPiece(cell)) {
         return fillCell(board, piece, row, col);
     }
@@ -144,9 +144,20 @@ export function removePieceFromBoard(board, row, col) {
  */
 export function getSizeOfBoard(board) {
     return {
-        rows: board.length,
-        cols: board[0].length
+        rows: board.data.length,
+        cols: board.data[0].length
     }
+}
+
+/**
+ * Returns the Piece from the given Board's Cell.
+ * @param board
+ * @param row
+ * @param col
+ * @returns {Piece}
+ */
+export function getPieceFromBoard(board, row, col) {
+    return getPieceFromCell(getCellFromBoard(board, row, col));
 }
 
 /**
@@ -168,4 +179,215 @@ export function fillEnemyBoard(board) {
     board = addPieceToBoard(board, generatePiece('8', 'red'), 1, 4);
     board = addPieceToBoard(board, generatePiece('10', 'red'), 1, 5);
     return board;
+}
+
+/**
+ * Fills the Board with the player's Pieces.
+ * This function's only reason to exist, is to speed up testing
+ * @param board
+ */
+export function fillBoard(board) {
+    board = addPieceToBoard(board, generatePiece('flag', 'blue'), 4, 0);
+    board = addPieceToBoard(board, generatePiece('bomb', 'blue'), 4, 1);
+    board = addPieceToBoard(board, generatePiece('bomb', 'blue'), 4, 2);
+    board = addPieceToBoard(board, generatePiece('1', 'blue'), 3, 3);
+    board = addPieceToBoard(board, generatePiece('2', 'blue'), 4, 4);
+    board = addPieceToBoard(board, generatePiece('2', 'blue'), 4, 5);
+    board = addPieceToBoard(board, generatePiece('3', 'blue'), 5, 0);
+    board = addPieceToBoard(board, generatePiece('3', 'blue'), 5, 1);
+    board = addPieceToBoard(board, generatePiece('4', 'blue'), 5, 2);
+    board = addPieceToBoard(board, generatePiece('6', 'blue'), 5, 3);
+    board = addPieceToBoard(board, generatePiece('8', 'blue'), 5, 4);
+    board = addPieceToBoard(board, generatePiece('10', 'blue'), 5, 5);
+    return board;
+}
+
+/**
+ * Rotates the board with 180 degrees.
+ * It can be used when switching players
+ * @param board
+ * @returns {Board}
+ */
+export function rotateBoard(board) {
+    let size = getSizeOfBoard(board)
+    let newBoard = generateBoard(size.rows, size.cols);
+
+    for (let rowIndex = 0; rowIndex < size.rows; rowIndex++) {
+        for (let colIndex = 0; colIndex < size.cols; colIndex++) {
+            if (isCellHasPiece(getCellFromBoard(board, rowIndex, colIndex))) {
+                newBoard = addPieceToBoard(
+                    newBoard,
+                    getPieceFromBoard(board, rowIndex, colIndex),
+                    Math.abs(rowIndex - size.rows + 1),
+                    Math.abs(colIndex - size.cols + 1)
+                )
+            }
+        }
+    }
+
+    return newBoard;
+}
+
+/**
+ * Check if the board has a Piece selected
+ * @param board
+ */
+export function hasBoardSelection(board) {
+    return board.selected !== null;
+}
+
+/**
+ * Returns the selected Piece's coodinates
+ * @param board
+ * @returns {null | {row: number, col: number}}
+ */
+function getSelected(board) {
+    return board.selected;
+}
+
+/**
+ * Handles a click on a Piece
+ * @param board
+ * @param row
+ * @param col
+ * @returns {Board}
+ */
+export function togglePieceSelection(board, row, col) {
+    let cell = getCellFromBoard(board, row, col);
+
+    if (!isCellHasPiece(cell)) return board;
+
+    if (hasBoardSelection(board)) {
+        const cords = getSelected(board);
+        if ((cords.row === row) && (cords.col === col)) {
+            board = unSelectPiece(board);
+        } else {
+            return board; // Has selection, but not the same as the clicked
+        }
+    }  else {
+        board = selectPiece(board, row, col);
+    }
+    return board;
+}
+
+/**
+ * Checks if a coordinate is in the table
+ * @param board
+ * @param row
+ * @param col
+ * @return boolean
+ */
+function isInBoard(board, row, col) {
+    const size = getSizeOfBoard(board);
+    return ((row >= 0) && (col >= 0) && (row < size.rows) && (col < size.cols));
+}
+
+/**
+ * Determinate if a Cell can be activated
+ * @param board
+ * @param row
+ * @param col
+ * @param source - The Piece that wants to move
+ * @return {boolean}
+ */
+function canActivateCell(board, row, col, source) {
+    if (!isInBoard(board, row, col)) return false;
+
+    let cell = getCellFromBoard(board, row, col);
+    if (isCellHasPiece(cell)) {
+        let piece = getPieceFromCell(cell);
+        return (piece.color !== source.color);
+    } else {
+        return true;
+    }
+}
+
+/**
+ * Activates a Cell if it can be activated
+ * Gives back the same board!
+ * @param board
+ * @param row
+ * @param col
+ * @param source The Piece that wants to move
+ * @returns {Board}
+ */
+function activateCell(board, row, col, source) {
+    if (!canActivateCell(board, row, col, source)) return board;
+    board.activeCells.push({
+        row, col
+    })
+    return board;
+}
+
+/**
+ * Selects a Piece and activates that Cells, where the Piece can move
+ * @param board
+ * @param row
+ * @param col
+ * @returns {Board}
+ */
+function selectPiece(board, row, col) {
+    if (hasBoardSelection(board)) return board;
+    board = deepCopy(board);
+    board.selected = {row, col};
+    let cell = getCellFromBoard(board, row, col);
+    let piece = getPieceFromCell(cell);
+
+    //Handle edge case
+    if (['bomb', 'flag'].includes(piece.type)) return board;
+
+    if (piece.type === '2') {
+        const size = getSizeOfBoard(board);
+        const maxShift = Math.max(size.rows, size.cols);
+        for (let shift = 1; shift < maxShift; shift++) {
+            board = activateCell(board, row-shift, col, piece);
+            board = activateCell(board, row+shift, col, piece);
+            board = activateCell(board, row, col-shift, piece);
+            board = activateCell(board, row, col+shift, piece);
+        }
+    } else {
+        // console.log('source', source);
+        board = activateCell(board, row-1, col, piece);
+        board = activateCell(board, row+1, col, piece);
+        board = activateCell(board, row, col-1, piece);
+        board = activateCell(board, row, col+1, piece);
+    }
+    return board;
+}
+
+/**
+ * Un-selects a Piece and clears the activated Cells
+ * @param board
+ * @returns {Board}
+ */
+function unSelectPiece(board) {
+    if (!hasBoardSelection(board)) return board;
+    board = deepCopy(board);
+    board.selected = null;
+    board.activeCells = [];
+
+    return board;
+}
+
+/**
+ * Check if a Cell is active
+ * @param board
+ * @param row
+ * @param col
+ * @returns {boolean}
+ */
+export function isActiveCell(board, row, col) {
+    if (!hasBoardSelection(board)) return false;
+    let elem;
+    for (let i = 0; i < board.activeCells.length; i++) {
+        elem = board.activeCells[i];
+        if ((elem.row === row) && (elem.col === col)) return true
+    }
+    return false;
+}
+
+export function isSelected(board, row, col) {
+    if (!hasBoardSelection(board)) return false;
+    let selected = board.selected;
+    return ((selected.row === row) && (selected.col === col));
 }

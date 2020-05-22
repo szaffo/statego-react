@@ -53,7 +53,10 @@
     background-position: center
 
     &[data-color="blue"]
-        background-image: url("../images/sprites/blue_bomb.png")
+        background-image: url("../images/sprites/blue_blank.png")
+
+        &[data-type="blank"]
+            background-image: url("../images/sprites/blue_blank.png")
 
         &[data-type="1"]
             background-image: url("../images/sprites/blue_1.png")
@@ -92,7 +95,10 @@
             background-image: url("../images/sprites/blue_bomb.png")
 
     &[data-color="red"]
-        background-image: url("../images/sprites/red_bomb.png")
+        background-image: url("../images/sprites/red_blank.png")
+
+        &[data-type="blank"]
+            background-image: url("../images/sprites/red_blank.png")
 
         &[data-type="1"]
             background-image: url("../images/sprites/red_1.png")

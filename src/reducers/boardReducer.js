@@ -1,10 +1,10 @@
 import {
     addPieceToBoard,
     BOARD_COL_NUM,
-    BOARD_ROW_NUM,
+    BOARD_ROW_NUM, fillBoard,
     fillEnemyBoard,
     generateBoard,
-    removePieceFromBoard
+    removePieceFromBoard, rotateBoard, togglePieceSelection
 } from '../functions/boardFunctions';
 
 
@@ -21,11 +21,21 @@ export const boardReducer = (board = starter, action) => {
         case 'PIECE_BOARD_TO_HAND':
             return removePieceFromBoard(board, action.row, action.col);
 
-        case 'SETSTAGE':
+        case 'SET_TAGE':
             if (action.stage === 4) {
                 board = fillEnemyBoard(board);
             }
             return board;
+
+        case 'FILL':
+            board = fillEnemyBoard(board);
+            return fillBoard(board);
+
+        case 'TOGGLE_ROUND':
+            return rotateBoard(board);
+
+        case 'SELECT_PIECE':
+            return togglePieceSelection(board, action.row, action.col);
 
         default:
             return board;

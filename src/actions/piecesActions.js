@@ -15,3 +15,11 @@ export function movePieceFromBoardToHand(piece, row, col) {
         col
     }
 }
+
+export function selectPiece(row, col) {
+    return {
+        type: 'SELECT_PIECE',
+        row,
+        col
+    }
+}
