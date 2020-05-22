@@ -32,15 +32,11 @@
     &:hover 
         background-color: rgba(10, 140, 247, 0.322)
 
-    &.canDrop, 
-    &[data-allowed="true"]
-        background-color: unset
-        box-shadow: 0px 0px 15px 5px #4df70a inset
+    &.active
+        background-color: rgba(0,255,0,0.6)
 
-    &.canNotDrop,
-    &[data-allowed="false"]
-        background-color: unset
-        box-shadow: 0px 0px 15px 5px #f70a0a inset
+    &.disabled
+        background-color: rgba(255, 0,0, 0.6)
 
     .piece
         width: 100%

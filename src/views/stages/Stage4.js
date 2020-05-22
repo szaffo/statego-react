@@ -3,12 +3,12 @@ import { Comment } from 'semantic-ui-react'
 import player1 from "../../images/player_1.png";
 import player2 from "../../images/player_2.png";
 
-import { Board } from "../table/Board";
-import { Hand } from '../table/Hand';
+import { Board } from "../board/Board";
+import { Hand } from '../board/Hand';
 import { useSelector } from 'react-redux';
 
 
-export function Stage4(props) {
+export function Stage4() {
 
     const round = useSelector(state => state.round);
     const roundText = (round)? 'A Te köröd' : 'Az ellenség köre';
@@ -36,11 +36,11 @@ export function Stage4(props) {
                 </div>
                 <div className="column eight wide">
                     <h1 className="ui header centered">{roundText}</h1>
-                    <Board></Board>
+                    <Board/>
                 </div>
                 <div className="column four wide">
                     <h1 className="ui header centered medium">Elesett katonák</h1>
-                    <Hand></Hand>
+                    <Hand/>
                 </div>
             </div>
         </div>;

@@ -4,19 +4,19 @@ import { Comment } from 'semantic-ui-react'
 import player1 from "../../images/player_1.png";
 import player2 from "../../images/player_2.png";
 
-import { Board } from "../table/Board";
-import { Hand } from '../table/Hand';
+import { Board } from "../board/Board";
+import { Hand } from '../board/Hand';
 import { ReadyModal } from '../modals/readyModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { setStageAction } from '../../actions/stageActions';
 
-export function Stage3(props) {
+export function Stage3() {
     const dispatch = useDispatch();
-    const hand = useSelector(store => store.hand);
+    const hand = useSelector(state => state.pieces.hand);
     const canContinue = (hand.length === 0);
 
     return <div className="stage" id="stage-3">
-        <div className="ui five column grid stage-3-grid">
+        <div className="ui five column grid stage-3-grid stretched">
             <div className="column four wide">
                 <div className="ui comments">
                     <h1 className="ui header medium">Játékosok</h1>
@@ -36,16 +36,16 @@ export function Stage3(props) {
                     </Comment>
                 </div>
 
-                <ReadyModal disabled={canContinue} onOkay={() => {dispatch(setStageAction(4))}}></ReadyModal>
+                <ReadyModal disabled={canContinue} onOkay={() => {dispatch(setStageAction(4))}}/>
 
             </div>
             <div className="column eight wide">
-                <h1 className="ui header centered">Csatamező elrendezése</h1>
-                <Board></Board>
+                <h1 className="ui header centered">Harctér elrendezése</h1>
+                <Board dndAllowed />
             </div>
             <div className="column four wide">
                 <h1 className="ui header centered medium">Felhasználható katonák</h1>
-                <Hand></Hand>
+                <Hand dndAllowed />
             </div>
         </div>
     </div>;

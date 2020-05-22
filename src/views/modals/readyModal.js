@@ -31,7 +31,7 @@ export class ReadyModal extends Component {
                 basic
                 size='small'
             >
-                <Header icon='check' content='Biztos hogy kész vagy?' />
+                <Header icon='check' size='huge' content='Biztos hogy kész vagy?' />
                
                 <Modal.Content>
                     <h3>Az elfogadás után bármikor elkezdődhet a játék, amint az ellefél is kész. Ezután már nem tudod módosítani a bábuid helyzetét.</h3>

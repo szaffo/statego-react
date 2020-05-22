@@ -1,13 +1,16 @@
-import { generateHand, removePieceFromHand, addPieceToHand} from '../js/handFunctions';
+import { generateHand, removePieceFromHand, addPieceToHand} from '../functions/handFunctions';
 
 const starter = generateHand();
 
 export const handReducer = (hand = starter, action) => {
     switch (action.type) {
-        case 'REMOVE_PIECE_FROM_HAND':
+        case 'PIECE_HAND_TO_BOARD':
             return removePieceFromHand(hand, action.piece);
-        case 'ADD_PIECE_TO_HAND':
+
+        case 'PIECE_BOARD_TO_HAND':
             return addPieceToHand(hand, action.piece);
+
+
         default:
             return hand;
     }

@@ -1,5 +1,9 @@
 export const HAND_SIZE = 12;
 
+/**
+ * Generates a Hand full of Pieces.
+ * @returns {({color: string, type: string}|{color: string, type: string}|{color: string, type: string}|{color: string, type: string})[]}
+ */
 export function generateHand() {
     return [
         { type: 'flag', color: 'blue' },
@@ -17,6 +21,13 @@ export function generateHand() {
     ];
 }
 
+/**
+ * Removes the specified Piece from the Hand by generating
+ * a new one without the Piece
+ * @param hand
+ * @param piece
+ * @returns Hand
+ */
 export function removePieceFromHand(hand, piece) {
     let handNew = [];
     let wasRemove = false;
@@ -32,6 +43,12 @@ export function removePieceFromHand(hand, piece) {
     return handNew;
 }
 
+/**
+ * Add a Piece to the Hand. Cretes a new Hand.
+ * @param hand
+ * @param piece
+ * @returns Hand
+ */
 export function addPieceToHand(hand, piece) {
     hand.push(piece);
     return JSON.parse(JSON.stringify(hand));
