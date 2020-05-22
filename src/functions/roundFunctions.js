@@ -2,16 +2,14 @@ import {deepCopy} from "./generalFunctions";
 
 /**
  * Generates the first round
- * @param player_1_name
- * @param player_2_name
- * @param first
  * @returns Round
  */
 export function generateRound() {
     return  {
         player_1: 'blue',
         player_2: 'red',
-        now: 'blue'
+        now: 'blue',
+        started: false
     }
 }
 
@@ -21,6 +19,7 @@ export function generateRound() {
  * @returns Round
  */
 export function toggleRound(round) {
+    if (!round.started) return round;
     round = deepCopy(round);
     switch (round.now) {
         case round.player_1:

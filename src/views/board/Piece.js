@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useDrag } from 'react-dnd'
 import {generatePiece} from "../../functions/boardFunctions";
-import {movePieceFormHandToBoard, movePieceFromBoardToHand, selectPiece} from "../../actions/piecesActions";
+import {movePiece, movePieceFormHandToBoard, movePieceFromBoardToHand, selectPiece} from "../../actions/piecesActions";
 
 export function Piece(props) {
     const dndAllowed = props.dndAllowed || false;
@@ -29,17 +29,24 @@ export function Piece(props) {
        
         end: (item, monitor) => {
             if (monitor.didDrop()) {
+                const dropRes = monitor.getDropResult();
                 if (item.from === 'hand') {
                     const piece = generatePiece(item.piece, item.color);
-                    const dropRes = monitor.getDropResult();
                     // dispatch(removePieceFromHand(piece));
 
                     dispatch(movePieceFormHandToBoard(piece, dropRes.row, dropRes.col));
+                } else if (item.from === 'board') {
+                    const from = {
+                        row: item.row,
+                        col: item.col
+                    };
+                    console.log('FIRED', from, dropRes)
+                    dispatch(movePiece(from, dropRes));
                 }
             }
         },
         
-        canDrag: () => { return ((dndAllowed) && (itemData.from === 'hand')) }
+        canDrag: () => { return ((dndAllowed)) } //&& (itemData.from === 'hand')) }
     });
 
     function click(event, data) {

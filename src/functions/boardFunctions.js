@@ -190,8 +190,8 @@ export function fillBoard(board) {
     board = addPieceToBoard(board, generatePiece('flag', 'blue'), 4, 0);
     board = addPieceToBoard(board, generatePiece('bomb', 'blue'), 4, 1);
     board = addPieceToBoard(board, generatePiece('bomb', 'blue'), 4, 2);
-    board = addPieceToBoard(board, generatePiece('1', 'blue'), 3, 3);
-    board = addPieceToBoard(board, generatePiece('2', 'blue'), 4, 4);
+    board = addPieceToBoard(board, generatePiece('1', 'blue'), 4, 3);
+    board = addPieceToBoard(board, generatePiece('2', 'blue'), 2, 4);
     board = addPieceToBoard(board, generatePiece('2', 'blue'), 4, 5);
     board = addPieceToBoard(board, generatePiece('3', 'blue'), 5, 0);
     board = addPieceToBoard(board, generatePiece('3', 'blue'), 5, 1);
@@ -237,11 +237,11 @@ export function hasBoardSelection(board) {
 }
 
 /**
- * Returns the selected Piece's coodinates
+ * Returns the selected Piece's coordinates
  * @param board
  * @returns {null | {row: number, col: number}}
  */
-function getSelected(board) {
+export function getSelected(board) {
     return board.selected;
 }
 
@@ -337,14 +337,7 @@ function selectPiece(board, row, col) {
     if (['bomb', 'flag'].includes(piece.type)) return board;
 
     if (piece.type === '2') {
-        const size = getSizeOfBoard(board);
-        const maxShift = Math.max(size.rows, size.cols);
-        for (let shift = 1; shift < maxShift; shift++) {
-            board = activateCell(board, row-shift, col, piece);
-            board = activateCell(board, row+shift, col, piece);
-            board = activateCell(board, row, col-shift, piece);
-            board = activateCell(board, row, col+shift, piece);
-        }
+        activateCellsForScout(board, row, col);
     } else {
         // console.log('source', source);
         board = activateCell(board, row-1, col, piece);
@@ -360,7 +353,7 @@ function selectPiece(board, row, col) {
  * @param board
  * @returns {Board}
  */
-function unSelectPiece(board) {
+export function unSelectPiece(board) {
     if (!hasBoardSelection(board)) return board;
     board = deepCopy(board);
     board.selected = null;
@@ -386,8 +379,70 @@ export function isActiveCell(board, row, col) {
     return false;
 }
 
+/**
+ * Check if a Cell is selected
+ * @param board
+ * @param row
+ * @param col
+ * @returns {boolean}
+ */
 export function isSelected(board, row, col) {
     if (!hasBoardSelection(board)) return false;
     let selected = board.selected;
     return ((selected.row === row) && (selected.col === col));
+}
+
+/**
+ * Activates every Cell where the scout (piece.type === 2) can be moved.
+ * @param board
+ * @param row
+ * @param col
+ * @returns {Board}
+ */
+function activateCellsForScout(board, row, col) {
+    const cell = getCellFromBoard(board, row, col);
+    const piece = getPieceFromCell(cell);
+
+    function scout(board, row, col, direction, source) {
+        row = row + direction.row;
+        col = col + direction.col;
+
+        if (!isInBoard(board, row , col)) return board;
+        const canActivate = canActivateCell(board, row, col, source);
+        if (!canActivate) return  board;
+
+        board = activateCell(board, row, col, source);
+        if (isCellHasPiece(getCellFromBoard(board, row, col))) return board;
+
+        return scout(board, row, col, direction, source);
+    }
+
+    board = scout(board, row, col, {row: -1, col: 0}, piece);
+    board = scout(board, row, col, {row: +1, col: 0}, piece);
+    board = scout(board, row, col, {row: 0, col: +1}, piece);
+    board = scout(board, row, col, {row: 0, col: -1}, piece);
+
+    return board;
+}
+
+/**
+ * Moves a Piece to a free cell
+ * @param board
+ * @param from - {row: number, col:number}
+ * @param to - {row: number, col:number}
+ * @returns {Board}
+ */
+export function movePiece(board, from, to) {
+    board = deepCopy(board);
+    const piece = getPieceFromBoard(board, from.row, from.col);
+    const targetCell = getCellFromBoard(board, to.row, to.col);
+
+    if (isCellHasPiece(targetCell)) {
+        return board;
+    }
+
+    board = removePieceFromBoard(board, from.row, from.col);
+    board = addPieceToBoard(board, piece, to.row, to.col);
+
+    return board;
 }

@@ -23,3 +23,11 @@ export function selectPiece(row, col) {
         col
     }
 }
+
+export function movePiece(from, to) {
+    return {
+        type: 'PIECE_BOARD_TO_BOARD',
+        from,
+        to
+    }
+}
