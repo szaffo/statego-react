@@ -142,9 +142,31 @@
     display: flex
     flex-direction: row
     flex-wrap: wrap
-    justify-content: flex-start
+    justify-content: center
+    justify-items: center
     align-items: center
-    align-content: flex-start
+    align-content: center
+    border-radius: 3px
+    margin: 30px
+    padding: 10px 0
+    transition: background-color 60ms linear
+
+    &.active
+        background-color: rgba(0,255,0,0.7)
 
     .board-slot
         border: none
+
+.fight-modal-container
+    display: flex
+    flex-direction: row
+    justify-content: center
+    height: 150px
+    align-items: center
+
+    .piece
+        width: 100px
+        height: 100px
+
+    .icon
+        margin: 40px

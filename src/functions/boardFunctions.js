@@ -191,7 +191,7 @@ export function fillBoard(board) {
     board = addPieceToBoard(board, generatePiece('bomb', 'blue'), 4, 1);
     board = addPieceToBoard(board, generatePiece('bomb', 'blue'), 4, 2);
     board = addPieceToBoard(board, generatePiece('1', 'blue'), 4, 3);
-    board = addPieceToBoard(board, generatePiece('2', 'blue'), 2, 4);
+    board = addPieceToBoard(board, generatePiece('2', 'blue'), 4, 4);
     board = addPieceToBoard(board, generatePiece('2', 'blue'), 4, 5);
     board = addPieceToBoard(board, generatePiece('3', 'blue'), 5, 0);
     board = addPieceToBoard(board, generatePiece('3', 'blue'), 5, 1);

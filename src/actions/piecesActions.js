@@ -24,9 +24,9 @@ export function selectPiece(row, col) {
     }
 }
 
-export function movePiece(from, to) {
+export function movePiece(from, to, preGame = false) {
     return {
-        type: 'PIECE_BOARD_TO_BOARD',
+        type: (preGame)? 'PIECE_BOARD_TO_BOARD_PRE' : 'PIECE_BOARD_TO_BOARD',
         from,
         to
     }

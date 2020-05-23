@@ -8,8 +8,7 @@ export function generateRound() {
     return  {
         player_1: 'blue',
         player_2: 'red',
-        now: 'blue',
-        started: false
+        now: 'blue'
     }
 }
 
@@ -19,7 +18,6 @@ export function generateRound() {
  * @returns Round
  */
 export function toggleRound(round) {
-    if (!round.started) return round;
     round = deepCopy(round);
     switch (round.now) {
         case round.player_1:

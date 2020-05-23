@@ -30,18 +30,23 @@ export function Piece(props) {
         end: (item, monitor) => {
             if (monitor.didDrop()) {
                 const dropRes = monitor.getDropResult();
-                if (item.from === 'hand') {
-                    const piece = generatePiece(item.piece, item.color);
-                    // dispatch(removePieceFromHand(piece));
+                const piece = generatePiece(item.piece, item.color);
 
-                    dispatch(movePieceFormHandToBoard(piece, dropRes.row, dropRes.col));
+                if (item.from === 'hand') {
+                    if (dropRes.targetType === 'cell')
+                        dispatch(movePieceFormHandToBoard(piece, dropRes.row, dropRes.col));
                 } else if (item.from === 'board') {
                     const from = {
                         row: item.row,
                         col: item.col
                     };
-                    console.log('FIRED', from, dropRes)
-                    dispatch(movePiece(from, dropRes));
+
+                    if (dropRes.targetType === 'cell') {
+                        dispatch(movePiece(from, dropRes, true));
+                    } else {
+                        dispatch(movePieceFromBoardToHand(piece, item.row, item.col));
+                    }
+
                 }
             }
         },
@@ -59,7 +64,7 @@ export function Piece(props) {
         }
     }
     
-    const opacity = (collectedProps.isDragging)? 0 : 1;
+    const opacity = (collectedProps.isDragging)? 0.4 : 1;
 
     return <div onClick={(e) => click(e, itemData)} ref={drag} className="piece" id={props.id} data-color={props.color} data-type={props.type} style={{'opacity': opacity}}/>;
 }

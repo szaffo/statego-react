@@ -4,13 +4,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 import { Piece } from './Piece';
 import {
-    getCellFromBoard,
+    getCellFromBoard, getPieceFromBoard,
     getPieceFromCell, getSelected,
     isActiveCell,
     isCellHasPiece,
     isSelected,
 } from "../../functions/boardFunctions";
 import {movePiece} from "../../actions/piecesActions";
+import {fightOn} from "../../actions/fightActions";
 
 
 export function Cell(props) {
@@ -25,7 +26,8 @@ export function Cell(props) {
         drop: () => {
             return {
                 col: props.col,
-                row: props.row
+                row: props.row,
+                targetType: 'cell'
             }
         },
         collect: (monitor) => {
@@ -57,7 +59,13 @@ export function Cell(props) {
 
     const onClick = (e) => {
         if (!isActiveCell(board, props.row, props.col)) return;
-        if (isCellHasPiece(getCellFromBoard(board, props.row, props.col))) return;
+        if (isCellHasPiece(getCellFromBoard(board, props.row, props.col))) {
+            const attacked = getPieceFromBoard(board, props.row, props.col);
+            const cord = getSelected(board);
+            const attacker = getPieceFromBoard(board, cord.row, cord.col);
+            dispatch(fightOn(attacker, attacked));
+            return;
+        }
         console.log('fired')
 
         const to = {
