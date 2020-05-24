@@ -3,3 +3,9 @@ export function toggleRound() {
         type: 'TOGGLE_ROUND'
     }
 }
+
+export function reset() {
+    return {
+        type: 'RESET'
+    }
+}

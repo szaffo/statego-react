@@ -3,6 +3,7 @@ import player1 from "../../images/player_1.png";
 import player2 from "../../images/player_2.png";
 import {useSelector} from 'react-redux';
 import cn from 'classnames';
+import {getPlayerName} from "../../functions/roundFunctions";
 
 export function PlayerList() {
     const round = useSelector(state => state.round);
@@ -13,14 +14,14 @@ export function PlayerList() {
                 <div className={classes1}>
                     <img alt='játékos kép' className="ui avatar image" src={player1}/>
                         <div className="content">
-                            <div className="header">{round.player_1}</div>
+                            <div className="header">{getPlayerName(round, 'blue')}</div>
                         </div>
                 </div>
 
                 <div className={classes2}>
                     <img alt='játékos kép' className="ui avatar image" src={player2}/>
                         <div className="content">
-                            <div className="header">{round.player_2}</div>
+                            <div className="header">{getPlayerName(round, 'red')}</div>
                         </div>
                 </div>
 

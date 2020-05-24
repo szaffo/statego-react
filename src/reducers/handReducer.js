@@ -1,4 +1,4 @@
-import {generateHand, removePieceFromHand, addPieceToHand, eraseHand} from '../functions/handFunctions';
+import {generateHand, removePieceFromHand, addPieceToHand, eraseHand, fightEnd} from '../functions/handFunctions';
 
 const starter = generateHand();
 
@@ -12,6 +12,12 @@ export const handReducer = (hand = starter, action) => {
 
         case 'FILL':
             return eraseHand();
+
+        case 'FIGHT_END':
+            return fightEnd(hand, action.attacker, action.attacked);
+
+        case 'RESET':
+            return starter;
 
         default:
             return hand;

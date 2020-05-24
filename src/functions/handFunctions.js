@@ -1,4 +1,5 @@
 import {deepCopy} from "./generalFunctions";
+import {canDefeat} from "./fightFunctions";
 
 export const HAND_SIZE = 12;
 
@@ -62,4 +63,17 @@ export function addPieceToHand(hand, piece) {
  */
 export function eraseHand() {
     return [];
+}
+
+/**
+ * Adds the defeated Pieces to the hand
+ * @param hand
+ * @param attacker
+ * @param attacked
+ * @returns {Hand}
+ */
+export function fightEnd(hand, attacker, attacked) {
+    if (canDefeat(attacker, attacked)) hand =  addPieceToHand(hand, attacked);
+    if (canDefeat(attacked, attacker)) hand =  addPieceToHand(hand, attacker);
+    return hand;
 }

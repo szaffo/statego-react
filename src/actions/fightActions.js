@@ -1,13 +1,20 @@
-export function fightOn(attacker, attacked) {
+export function fightStart(attacker, attacked) {
     return {
-        type: 'FIGHT_ON',
+        type: 'FIGHT_START',
         attacker, attacked
     }
 }
 
-export function fightOff(attacker, attacked) {
+export function fightEnd(attacker, attacked) {
     return {
-        type: 'FIGHT_OFF',
+        type: 'FIGHT_END',
         attacker, attacked
+    }
+}
+
+export function victory(attacker) {
+    return {
+        type: 'VICTORY',
+        attacker
     }
 }

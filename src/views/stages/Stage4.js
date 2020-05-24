@@ -4,6 +4,7 @@ import { Hand } from '../board/Hand';
 import { useSelector} from 'react-redux';
 import {PlayerList} from "../players/playerList";
 import {FightModal} from "../modals/fightModal";
+import {VictoryModal} from "../modals/victoryModal";
 
 
 export function Stage4() {
@@ -16,8 +17,8 @@ export function Stage4() {
             <div className="ui five column grid stage-3-grid">
                 <div className="column four wide center aligned">
                     <PlayerList/>
-                    {/*<Button positive onClick={() => {dispatch(toggleRound())}}>Toggle round</Button>*/}
                     <FightModal/>
+                    <VictoryModal/>
                 </div>
                 <div className="column eight wide">
                     <h1 className="ui header centered">{roundText}</h1>

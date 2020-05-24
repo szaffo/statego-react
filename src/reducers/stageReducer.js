@@ -6,6 +6,9 @@ export const stageReducer = (stage = 1, action) => {
         case 'FILL':
             return 4;
 
+        case 'RESET':
+            return 1;
+
         default:
             return stage;
     }

@@ -8,6 +8,7 @@ import cn from 'classnames';
 
 export function Hand(props) {
     const hand = useSelector(state => state.pieces.hand);
+    const round = useSelector(state => state.round);
     const pieces = [];
     const dndAllowed = props.dndAllowed || false;
 
@@ -29,7 +30,9 @@ export function Hand(props) {
     })
 
     for (let i = 0; i < hand.length; i++) {
-        pieces.push(<Piece dndAllowed={dndAllowed} place='hand' color={hand[i].color} type={hand[i].type} key={`P${i}`} id={i} dragable/>);
+        if (hand[i].color === round.now) {
+            pieces.push(<Piece dndAllowed={dndAllowed} place='hand' color={hand[i].color} type={hand[i].type} key={`P${i}`} id={i} dragable/>);
+        }
     }
 
     const classes = cn(

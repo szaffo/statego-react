@@ -1,4 +1,5 @@
 import {deepCopy} from "./generalFunctions";
+import {canDefeat} from "./fightFunctions";
 
 export const BOARD_ROW_NUM = 6;
 export const BOARD_COL_NUM = 6;
@@ -444,5 +445,26 @@ export function movePiece(board, from, to) {
     board = removePieceFromBoard(board, from.row, from.col);
     board = addPieceToBoard(board, piece, to.row, to.col);
 
+    return board;
+}
+
+/**
+ * Removes the defeated Pieces from the board
+ * @param board
+ * @param attacker
+ * @param attacked
+ * @returns {Board}
+ */
+export function fightEnd(board, attacker, attacked) {
+    board = unSelectPiece(board);
+    if (canDefeat(attacked, attacker)) board = removePieceFromBoard(board, attacker.row, attacker.col);
+    if (canDefeat(attacker, attacked)) {
+        board = removePieceFromBoard(board, attacked.row, attacked.col);
+        board = movePiece(
+            board,
+            {row: attacker.row, col: attacker.col},
+            {row: attacked.row, col: attacked.col}
+        );
+    }
     return board;
 }

@@ -8,7 +8,9 @@ export function generateRound() {
     return  {
         player_1: 'blue',
         player_2: 'red',
-        now: 'blue'
+        now: 'blue',
+        red: 'Játékos 1',
+        blue: 'Játékos 2'
     }
 }
 
@@ -33,4 +35,21 @@ export function toggleRound(round) {
     }
 
     return round;
+}
+
+/**
+ * Returns the player name witch belongs to the given color
+ * @param round
+ * @param color {'red'|'blue'}
+ * @returns {string}
+ */
+export function getPlayerName(round, color) {
+    switch (color) {
+        case 'red':
+            return round.red;
+        case 'blue':
+            return round.blue;
+        default:
+            return 'Ismeretlen'
+    }
 }

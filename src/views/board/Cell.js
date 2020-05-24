@@ -11,7 +11,7 @@ import {
     isSelected,
 } from "../../functions/boardFunctions";
 import {movePiece} from "../../actions/piecesActions";
-import {fightOn} from "../../actions/fightActions";
+import {fightStart} from "../../actions/fightActions";
 
 
 export function Cell(props) {
@@ -61,12 +61,17 @@ export function Cell(props) {
         if (!isActiveCell(board, props.row, props.col)) return;
         if (isCellHasPiece(getCellFromBoard(board, props.row, props.col))) {
             const attacked = getPieceFromBoard(board, props.row, props.col);
+            attacked.row = props.row;
+            attacked.col = props.col;
+
             const cord = getSelected(board);
             const attacker = getPieceFromBoard(board, cord.row, cord.col);
-            dispatch(fightOn(attacker, attacked));
+            attacker.row = cord.row;
+            attacker.col = cord.col;
+
+            dispatch(fightStart(attacker, attacked));
             return;
         }
-        console.log('fired')
 
         const to = {
             row: props.row,

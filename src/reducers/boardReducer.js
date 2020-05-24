@@ -1,7 +1,7 @@
 import {
     addPieceToBoard,
     BOARD_COL_NUM,
-    BOARD_ROW_NUM, fillBoard,
+    BOARD_ROW_NUM, fightEnd, fillBoard,
     fillEnemyBoard,
     generateBoard, movePiece,
     removePieceFromBoard, togglePieceSelection, unSelectPiece
@@ -38,6 +38,12 @@ export const boardReducer = (board = starter, action) => {
         case 'PIECE_BOARD_TO_BOARD':
             board = movePiece(board, action.from, action.to);
             return unSelectPiece(board);
+
+        case 'FIGHT_END':
+            return fightEnd(board, action.attacker, action.attacked);
+
+        case 'RESET':
+            return starter;
 
         default:
             return board;
