@@ -1,4 +1,4 @@
-import {generateRound, toggleRound} from "../functions/roundFunctions";
+import {generateRound, setPlayerNumber, setRoomId, toggleRound} from "../functions/roundFunctions";
 
 const starter = generateRound();
 
@@ -11,6 +11,12 @@ export const roundReducer = (round = starter, action) => {
 
         case 'RESET':
             return starter;
+
+        case 'ROOM_CREATED':
+            return setRoomId(round, action.roomId);
+
+        case 'ROOM_IS_FULL':
+            return setPlayerNumber(round, action.playerNumber);
 
         default:
             return round;

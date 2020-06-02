@@ -9,3 +9,10 @@ export function reset() {
         type: 'RESET'
     }
 }
+
+export function roomIsFull(playerNumber) {
+    return {
+        type: 'ROOM_IS_FULL',
+        playerNumber
+    }
+}

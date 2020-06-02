@@ -3,7 +3,7 @@ import { Board } from "../board/Board";
 import { Hand } from '../board/Hand';
 import { ReadyModal } from '../modals/readyModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { setStageAction } from '../../actions/stageActions';
+import { setStageActive } from '../../actions/stageActions';
 import {PlayerList} from "../players/playerList";
 
 export function Stage3() {
@@ -16,7 +16,7 @@ export function Stage3() {
             <div className="column four wide">
                 <PlayerList/>
 
-                <ReadyModal disabled={canContinue} onOkay={() => {dispatch(setStageAction(4))}}/>
+                <ReadyModal disabled={canContinue} onOkay={() => {dispatch(setStageActive(4))}}/>
 
             </div>
             <div className="column eight wide">

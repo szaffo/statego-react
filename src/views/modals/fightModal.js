@@ -5,7 +5,7 @@ import {fightEnd, victory} from "../../actions/fightActions";
 import {Piece} from "../board/Piece";
 import {isFightStarted} from "../../functions/fightFunctions";
 
-export function FightModal(props) {
+export function FightModal() {
     const dispatch = useDispatch();
     const fight = useSelector(state => state.fight);
 
@@ -33,7 +33,7 @@ export function FightModal(props) {
         ]
     }
 
-    return <Modal open={isFightStarted(fight)} basic size='medium'>
+    return <Modal open={isFightStarted(fight)} basic size='small'>
         <Header size='huge' as='h2' icon textAlign='center'>
             <Icon name='shield alternate' circular/>
             <Header.Content>Harc!</Header.Content>

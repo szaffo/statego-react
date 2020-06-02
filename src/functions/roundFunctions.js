@@ -10,7 +10,9 @@ export function generateRound() {
         player_2: 'red',
         now: 'blue',
         red: 'Játékos 1',
-        blue: 'Játékos 2'
+        blue: 'Játékos 2',
+        roomId: null,
+        thisPlayerIs: 0
     }
 }
 
@@ -52,4 +54,28 @@ export function getPlayerName(round, color) {
         default:
             return 'Ismeretlen'
     }
+}
+
+/**
+ * Sets the room id. Creates new round
+ * @param round
+ * @param roomId
+ * @returns {round}
+ */
+export function setRoomId(round, roomId) {
+    round = deepCopy(round);
+    round.roomId = roomId;
+    return round;
+}
+
+/**
+ * Set the current user's number. Creates a new round
+ * @param round
+ * @param number
+ * @returns {round}
+ */
+export function setPlayerNumber(round, number) {
+    round = deepCopy(round);
+    round.thisPlayerIs = number;
+    return round;
 }

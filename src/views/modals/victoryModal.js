@@ -6,7 +6,7 @@ import {getWinnerColor, hasWon} from "../../functions/fightFunctions";
 import {getPlayerName} from "../../functions/roundFunctions";
 import {reset as resetRound} from "../../actions/roundActions";
 
-export function VictoryModal(props) {
+export function VictoryModal() {
     const fight = useSelector(state => state.fight);
     const round = useSelector(state => state.round);
     const dispatch = useDispatch();
@@ -20,11 +20,11 @@ export function VictoryModal(props) {
         ]
     }
 
-    const reset = (e) => {
+    const reset = () => {
         dispatch(resetRound());
     }
 
-    return <Modal open={hasWon(fight)} basic size='medium'>
+    return <Modal open={hasWon(fight)} basic size='small'>
         <Header size='huge' as='h2' icon textAlign='center'>
             <Icon name='shield alternate' circular/>
             <Header.Content>{getPlayerName(round, getWinnerColor(fight))} győzőtt!</Header.Content>
