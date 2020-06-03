@@ -22,7 +22,7 @@ export class ReadyModal extends Component {
                             onClick={this.handleOpen}
                             color="green"
                             size="huge"
-                            disabled={!this.props.disabled}
+                            disabled={this.props.disabled}
                         >Kész</Button>
                     </div>}
                 

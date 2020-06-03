@@ -1,9 +1,10 @@
 import {
+    addEnemyPiece,
     addPieceToBoard,
     BOARD_COL_NUM,
     BOARD_ROW_NUM, fightEnd, fillBoard,
     fillEnemyBoard,
-    generateBoard, movePiece,
+    generateBoard, moveEnemyPiece, movePiece, removeEnemyPieceFromBoard,
     removePieceFromBoard, togglePieceSelection, unSelectPiece
 } from '../functions/boardFunctions';
 
@@ -28,8 +29,10 @@ export const boardReducer = (board = starter, action) => {
             return board;
 
         case 'FILL':
-            board = fillEnemyBoard(board);
-            return fillBoard(board);
+            return fillBoard(board, action.color);
+
+        case 'ENEMY_FILL':
+            return fillEnemyBoard(board, action.color);
 
         case 'SELECT_PIECE':
             return togglePieceSelection(board, action.row, action.col);
@@ -44,6 +47,16 @@ export const boardReducer = (board = starter, action) => {
 
         case 'RESET':
             return starter;
+
+        case 'ENEMY_PIECE_TO_BOARD':
+            return addEnemyPiece(board, action.row, action.col, action.piece);
+
+        case 'REMOVE_ENEMY_PIECE':
+            return removeEnemyPieceFromBoard(board, action.row, action.col);
+
+        case 'ENEMY_PIECE_BOARD_TO_BOARD':
+        case 'ENEMY_PIECE_BOARD_TO_BOARD_PRE':
+            return moveEnemyPiece(board, action.from, action.to);
 
         default:
             return board;

@@ -21,7 +21,7 @@ export function FightModal() {
             } else {
                 dispatch(fightEnd(fight.attacker, fight.attacked));
             }
-        }, 3000)
+        }, 1800)
     }
 
     let children;

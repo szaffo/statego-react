@@ -1,6 +1,6 @@
 import {getRoomId, getSocket} from "../socket/client";
 import {roomCreated} from "../actions/stageActions";
-
+import {showError} from "../actions/errorActions";
 
 export const socketMiddleware = (store) => (next) => (action) => {
     const socket = getSocket();
@@ -14,6 +14,9 @@ export const socketMiddleware = (store) => (next) => (action) => {
             socket.emit('create-room', (data) => {
                 if (data.status === 'ok') {
                     store.dispatch(roomCreated(data.roomId));
+                } else {
+                    store.dispatch(showError('Nem sikerült létrehozni a szobát.'));
+                    console.log(data.message);
                 }
             });
             break;
@@ -22,12 +25,28 @@ export const socketMiddleware = (store) => (next) => (action) => {
         // When the socket sends back the acknowledgement,
         // an other action will be dispatched (ROOM_IS_FULL)
         case 'JOIN_ROOM':
-            socket.emit("join-room", action.roomId, () => {});
+            socket.emit("join-room", action.roomId, (data) => {
+                if (data.status !== 'ok')  {
+                    store.dispatch(showError('Nem sikerült csatlakozni a szobához.'));
+                    console.log(data.message);
+                } else {
+                    window.addEventListener('beforeunload', async function (e) {
+                        console.log(action.roomId)
+                        await socket.emit('leave-room', action.roomId);
+                    });
+                }
+            });
             break;
 
-        // These actions came from the websocket server
+        // These actions not needed to send to the server
+        // and they won't be synced.
+        case 'TOGGLE_ENEMY_READY':
+        case 'ERROR':
+        case 'ERROR_OFF':
         case 'ROOM_IS_FULL':
         case 'ROOM_CREATED':
+        case 'SELECT_PIECE':    // This is a private action. It should not be synced with the other player.
+        case 'FIGHT_END':       // This action is fired by both clients, with the same data, automatically. No need to sync
             next(action);
             break;
 
@@ -51,9 +70,14 @@ export const socketMiddleware = (store) => (next) => (action) => {
             // This means there is no action that can be dispatched without the server knowing it.
             // Except those that goes in the non-default case of the switch.
             action.synced = true;
+            action.owner = store.getState().round.thisPlayerIs;
             socket.emit('sync-action', getRoomId(), action, 'true', (data) => {
                 if (data.status === 'ok') {
                     store.dispatch(action);
+                } else {
+                    store.dispatch(showError('Nem sikerült szinkronizálni a játékteret.'));
+                    console.log(data.message);
+                    action.synced = false;
                 }
             })
     }

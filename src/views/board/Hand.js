@@ -11,6 +11,7 @@ export function Hand(props) {
     const round = useSelector(state => state.round);
     const pieces = [];
     const dndAllowed = props.dndAllowed || false;
+    const show = (props.show === 'self')? 'self': 'enemy';
 
     const [collectedProps, drop] = useDrop({
         accept: 'Piece',
@@ -30,7 +31,7 @@ export function Hand(props) {
     })
 
     for (let i = 0; i < hand.length; i++) {
-        if (hand[i].color === round.now) {
+        if (((hand[i].color === round.thisPlayerColor) && (show === 'self')) || ((hand[i].color !== round.thisPlayerColor) && (show === 'enemy')) ) {
             pieces.push(<Piece dndAllowed={dndAllowed} place='hand' color={hand[i].color} type={hand[i].type} key={`P${i}`} id={i} dragable/>);
         }
     }

@@ -52,12 +52,13 @@ export function Cell(props) {
     let child = null;
     if (isCellHasPiece(cell)) {
         let piece = getPieceFromCell(cell);
-        let type = (piece.color === round.now)? piece.type : 'blank'
+        let type = (piece.color === round.thisPlayerColor)? piece.type : 'blank';
+        // let type = piece.type; // DEBUG
         child = <Piece dndAllowed={dndAllowed} place='board' color={piece.color} type={type} col={props.col} row={props.row}/>
     }
 
 
-    const onClick = (e) => {
+    const onClick = () => {
         if (!isActiveCell(board, props.row, props.col)) return;
         if (isCellHasPiece(getCellFromBoard(board, props.row, props.col))) {
             const attacked = getPieceFromBoard(board, props.row, props.col);

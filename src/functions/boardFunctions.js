@@ -165,20 +165,21 @@ export function getPieceFromBoard(board, row, col) {
  * Fills the Board with the enemy's Pieces.
  * It's only for testing purpose.
  * @param board
+ * @param color {'red'|'blue'}
  */
-export function fillEnemyBoard(board) {
-    board = addPieceToBoard(board, generatePiece('flag', 'red'), 0, 0);
-    board = addPieceToBoard(board, generatePiece('bomb', 'red'), 0, 1);
-    board = addPieceToBoard(board, generatePiece('bomb', 'red'), 0, 2);
-    board = addPieceToBoard(board, generatePiece('1', 'red'), 0, 3);
-    board = addPieceToBoard(board, generatePiece('2', 'red'), 0, 4);
-    board = addPieceToBoard(board, generatePiece('2', 'red'), 0, 5);
-    board = addPieceToBoard(board, generatePiece('3', 'red'), 1, 0);
-    board = addPieceToBoard(board, generatePiece('3', 'red'), 1, 1);
-    board = addPieceToBoard(board, generatePiece('4', 'red'), 1, 2);
-    board = addPieceToBoard(board, generatePiece('6', 'red'), 1, 3);
-    board = addPieceToBoard(board, generatePiece('8', 'red'), 1, 4);
-    board = addPieceToBoard(board, generatePiece('10', 'red'), 1, 5);
+export function fillEnemyBoard(board, color) {
+    board = addPieceToBoard(board, generatePiece('flag', color), 1, 5);
+    board = addPieceToBoard(board, generatePiece('bomb', color), 1, 4);
+    board = addPieceToBoard(board, generatePiece('bomb', color), 1, 3);
+    board = addPieceToBoard(board, generatePiece('1', color), 1, 2);
+    board = addPieceToBoard(board, generatePiece('2', color), 1, 1);
+    board = addPieceToBoard(board, generatePiece('2', color), 1, 0);
+    board = addPieceToBoard(board, generatePiece('3', color), 0, 5);
+    board = addPieceToBoard(board, generatePiece('3', color), 0, 4);
+    board = addPieceToBoard(board, generatePiece('4', color), 0, 3);
+    board = addPieceToBoard(board, generatePiece('6', color), 0, 2);
+    board = addPieceToBoard(board, generatePiece('8', color), 0, 1);
+    board = addPieceToBoard(board, generatePiece('10', color), 0, 0);
     return board;
 }
 
@@ -186,20 +187,21 @@ export function fillEnemyBoard(board) {
  * Fills the Board with the player's Pieces.
  * This function's only reason to exist, is to speed up testing
  * @param board
+ * @param color {'red'|'blue'}
  */
-export function fillBoard(board) {
-    board = addPieceToBoard(board, generatePiece('flag', 'blue'), 4, 0);
-    board = addPieceToBoard(board, generatePiece('bomb', 'blue'), 4, 1);
-    board = addPieceToBoard(board, generatePiece('bomb', 'blue'), 4, 2);
-    board = addPieceToBoard(board, generatePiece('1', 'blue'), 4, 3);
-    board = addPieceToBoard(board, generatePiece('2', 'blue'), 4, 4);
-    board = addPieceToBoard(board, generatePiece('2', 'blue'), 4, 5);
-    board = addPieceToBoard(board, generatePiece('3', 'blue'), 5, 0);
-    board = addPieceToBoard(board, generatePiece('3', 'blue'), 5, 1);
-    board = addPieceToBoard(board, generatePiece('4', 'blue'), 5, 2);
-    board = addPieceToBoard(board, generatePiece('6', 'blue'), 5, 3);
-    board = addPieceToBoard(board, generatePiece('8', 'blue'), 5, 4);
-    board = addPieceToBoard(board, generatePiece('10', 'blue'), 5, 5);
+export function fillBoard(board, color) {
+    board = addPieceToBoard(board, generatePiece('flag', color), 4, 0);
+    board = addPieceToBoard(board, generatePiece('bomb', color), 4, 1);
+    board = addPieceToBoard(board, generatePiece('bomb', color), 4, 2);
+    board = addPieceToBoard(board, generatePiece('1', color), 4, 3);
+    board = addPieceToBoard(board, generatePiece('2', color), 4, 4);
+    board = addPieceToBoard(board, generatePiece('2', color), 4, 5);
+    board = addPieceToBoard(board, generatePiece('3', color), 5, 0);
+    board = addPieceToBoard(board, generatePiece('3', color), 5, 1);
+    board = addPieceToBoard(board, generatePiece('4', color), 5, 2);
+    board = addPieceToBoard(board, generatePiece('6', color), 5, 3);
+    board = addPieceToBoard(board, generatePiece('8', color), 5, 4);
+    board = addPieceToBoard(board, generatePiece('10', color), 5, 5);
     return board;
 }
 
@@ -467,4 +469,51 @@ export function fightEnd(board, attacker, attacked) {
         );
     }
     return board;
+}
+
+/**
+ * Adds a blank piece to the board in the enemy's area
+ * @param board
+ * @param row
+ * @param col
+ * @param piece
+ * @returns {Board}
+ */
+export function addEnemyPiece(board, row, col, piece) {
+    const bSize = getSizeOfBoard(board);
+    return addPieceToBoard(board, piece, Math.abs(row - bSize.rows + 1), Math.abs(col - bSize.cols + 1));
+}
+
+/**
+ * Removes a piece from the enemy's area
+ * @param board
+ * @param row
+ * @param col
+ * @returns {*}
+ */
+export function removeEnemyPieceFromBoard(board, row, col) {
+    const bSize = getSizeOfBoard(board);
+    return removePieceFromBoard(board, Math.abs(row - bSize.rows + 1), Math.abs(col - bSize.cols + 1));
+}
+
+/**
+ * Moves an Enemy Piece to a free cell
+ * @param board
+ * @param from - {row: number, col:number}
+ * @param to - {row: number, col:number}
+ * @returns {Board}
+ */
+export function moveEnemyPiece(board, from, to) {
+    const bSize = getSizeOfBoard(board);
+    from = {
+        row: Math.abs(from.row - bSize.rows + 1),
+        col: Math.abs(from.col - bSize.cols + 1)
+    };
+
+    to = {
+        row: Math.abs(to.row - bSize.rows + 1),
+        col: Math.abs(to.col - bSize.cols + 1)
+    };
+
+    return movePiece(board, from, to);
 }

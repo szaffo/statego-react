@@ -1,12 +1,14 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { useDrag } from 'react-dnd'
 import {generatePiece} from "../../functions/boardFunctions";
 import {movePiece, movePieceFormHandToBoard, movePieceFromBoardToHand, selectPiece} from "../../actions/piecesActions";
+import {playerComes} from "../../functions/roundFunctions";
 
 export function Piece(props) {
     const dndAllowed = props.dndAllowed || false;
     const dispatch = useDispatch();
+    const round = useSelector(state => state.round);
 
     const itemData = {
         type: 'Piece',
@@ -51,15 +53,20 @@ export function Piece(props) {
             }
         },
         
-        canDrag: () => { return ((dndAllowed)) } //&& (itemData.from === 'hand')) }
+        canDrag: () => { return ((dndAllowed) && (itemData.color === round.thisPlayerColor)) } //&& (itemData.from === 'hand')) }
     });
 
     function click(event, data) {
+        // Move piece from board to the hand during setup
         if ((data.from === 'board') && dndAllowed) {
-            dispatch(movePieceFromBoardToHand(generatePiece(data.piece, data.color), data.row, data.col));
+            if (round.thisPlayerColor === data.color) {
+                dispatch(movePieceFromBoardToHand(generatePiece(data.piece, data.color), data.row, data.col));
+            }
+            return;
         }
 
-        if ((data.from === 'board') && (['1', '2', '3', '4', '6', '8', '10'].includes(data.piece))) {
+        // Select piece during game
+        if ((data.from === 'board') && (['1', '2', '3', '4', '6', '8', '10'].includes(data.piece)) && (playerComes(round))) {
             dispatch(selectPiece(props.row, props.col));
         }
     }

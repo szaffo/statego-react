@@ -14,7 +14,7 @@ export function generateFightObject() {
  * @param fight
  * @param attacker
  * @param attacked
- * @returns {Fight}
+ * @returns {fight}
  */
 export function startFight(fight, attacker, attacked) {
     fight = deepCopy(fight);
@@ -27,7 +27,7 @@ export function startFight(fight, attacker, attacked) {
 /**
  * Stops the fight
  * @param fight
- * @returns {Fight}
+ * @returns {fight}
  */
 export function stopFight(fight) {
     fight = deepCopy(fight);
@@ -69,7 +69,7 @@ export function isFightStarted(fight) {
  * Sets who won
  * @param fight
  * @param attacker
- * @returns {Fight}
+ * @returns {fight}
  */
 export function victory(fight, attacker) {
     fight = deepCopy(fight);

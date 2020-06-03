@@ -6,14 +6,14 @@ export const stageReducer = (stage = 1, action) => {
         case 'ROOM_CREATED':
             return 2;
 
-        case 'FILL':
-            return 4;
-
         case 'RESET':
-            return 1;
+            return action.stage;
 
         case 'ROOM_IS_FULL':
             return 3;
+
+        case 'BOTH_READY':
+            return 4;
 
         default:
             return stage;

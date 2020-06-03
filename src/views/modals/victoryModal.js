@@ -20,8 +20,8 @@ export function VictoryModal() {
         ]
     }
 
-    const reset = () => {
-        dispatch(resetRound());
+    const reset = (e, stage) => {
+        dispatch(resetRound(round.thisPlayerColor, stage));
     }
 
     return <Modal open={hasWon(fight)} basic size='small'>
@@ -34,7 +34,8 @@ export function VictoryModal() {
                 {children}
             </div>
             <div className='fight-modal-container'>
-                <Button onClick={(e) => reset(e)} basic positive>Főoldal</Button>
+                <Button onClick={(e) => reset(e, 3)} basic positive>Új játék</Button>
+                <Button onClick={(e) => reset(e, 1)} basic positive>Főoldal</Button>
             </div>
         </Modal.Content>
     </Modal>;

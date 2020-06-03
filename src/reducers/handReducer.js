@@ -17,7 +17,10 @@ export const handReducer = (hand = starter, action) => {
             return fightEnd(hand, action.attacker, action.attacked);
 
         case 'RESET':
-            return starter;
+            return generateHand(action.color);
+
+        case 'ROOM_IS_FULL':
+            return generateHand((action.playerNumber === 1)? 'blue' : 'red');
 
         default:
             return hand;

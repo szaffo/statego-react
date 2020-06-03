@@ -5,18 +5,19 @@ import { useSelector} from 'react-redux';
 import {PlayerList} from "../players/playerList";
 import {FightModal} from "../modals/fightModal";
 import {VictoryModal} from "../modals/victoryModal";
+import {playerComes} from "../../functions/roundFunctions";
 
 
 export function Stage4() {
 
     const round = useSelector(state => state.round);
-    const roundText = (round.now === round.player_1)? 'A Te köröd' : 'Az ellenség köre';
+    const roundText = (playerComes(round))? 'A Te köröd' : 'Az ellenség köre';
 
 
     return  <div className="stage" id="stage-4">
             <div className="ui five column grid stage-3-grid">
                 <div className="column four wide center aligned">
-                    <PlayerList/>
+                    <PlayerList mode='round'/>
                     <FightModal/>
                     <VictoryModal/>
                 </div>
@@ -25,8 +26,8 @@ export function Stage4() {
                     <Board/>
                 </div>
                 <div className="column four wide">
-                    <h1 className="ui header centered medium">Elesett katonák</h1>
-                    <Hand/>
+                    <h1 className="ui header centered medium">Legyőzött katonák</h1>
+                    <Hand show='enemy' />
                 </div>
             </div>
         </div>;

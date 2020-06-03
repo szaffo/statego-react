@@ -1,4 +1,5 @@
 import {roomIsFull} from "../actions/roundActions";
+import {showError} from "../actions/errorActions";
 
 const io = require('socket.io-client');
 
@@ -27,10 +28,9 @@ export function registerListenersOnSocket(_store) {
     }
     socket = getSocket();
 
-
     socket.on('room-is-full', ({roomId, player}) => {
         room = roomId;
-        store.dispatch(roomIsFull(player));
+        store.dispatch(roomIsFull(player, roomId));
     });
 
 
@@ -39,6 +39,10 @@ export function registerListenersOnSocket(_store) {
         // That means the synced flag is set, so the socket middleware
         // will not send it to the server again.
         store.dispatch(action);
+    });
+
+    socket.on('player-left', () => {
+        store.dispatch(showError('A másik játékos elhagyta a játékot. :('))
     });
 }
 

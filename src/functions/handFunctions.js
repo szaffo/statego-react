@@ -7,20 +7,20 @@ export const HAND_SIZE = 12;
  * Generates a Hand full of Pieces.
  * @returns {({color: string, type: string}|{color: string, type: string}|{color: string, type: string}|{color: string, type: string})[]}
  */
-export function generateHand() {
+export function generateHand(color) {
     return [
-        { type: 'flag', color: 'blue' },
-        { type: 'bomb', color: 'blue' },
-        { type: 'bomb', color: 'blue' },
-        { type: '1', color: 'blue' },
-        { type: '2', color: 'blue' },
-        { type: '2', color: 'blue' },
-        { type: '3', color: 'blue' },
-        { type: '3', color: 'blue' },
-        { type: '4', color: 'blue' },
-        { type: '6', color: 'blue' },
-        { type: '8', color: 'blue' },
-        { type: '10', color: 'blue' },
+        { type: 'flag', color: color },
+        { type: 'bomb', color: color },
+        { type: 'bomb', color: color },
+        { type: '1', color: color },
+        { type: '2', color: color },
+        { type: '2', color: color },
+        { type: '3', color: color },
+        { type: '3', color: color },
+        { type: '4', color: color },
+        { type: '6', color: color },
+        { type: '8', color: color },
+        { type: '10', color: color },
     ];
 }
 
