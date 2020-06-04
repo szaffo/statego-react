@@ -5,7 +5,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 Szabó Martin
 CQBO0I
 Kliensoldali webprogramozás & Stratego beadandó
-2020.05.247
+2020.06.04
 
 Ezt a megoldást Szabó Martin, CQBO0I küldte be és készítette a kliensoldali webprogamozás kurzus Startego feladatához.
 Kijelentem, hogy ez a megoldás a saját munkám.
