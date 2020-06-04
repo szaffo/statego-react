@@ -53,12 +53,12 @@ export function Piece(props) {
             }
         },
         
-        canDrag: () => { return ((dndAllowed) && (itemData.color === round.thisPlayerColor)) } //&& (itemData.from === 'hand')) }
+        canDrag: () => { return ((dndAllowed) && (itemData.color === round.thisPlayerColor) && (!round.playerReady)) } //&& (itemData.from === 'hand')) }
     });
 
     function click(event, data) {
         // Move piece from board to the hand during setup
-        if ((data.from === 'board') && dndAllowed) {
+        if ((data.from === 'board') && dndAllowed && (!round.playerReady)) {
             if (round.thisPlayerColor === data.color) {
                 dispatch(movePieceFromBoardToHand(generatePiece(data.piece, data.color), data.row, data.col));
             }
